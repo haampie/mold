@@ -1,4 +1,4 @@
-#!/bin/bash
+#!/bin/bash -x
 export LC_ALL=C
 set -e
 CC="${CC:-cc}"
@@ -19,6 +19,7 @@ int main() {}
 EOF
 
 clang -fuse-ld="$mold" -o $t/exe $t/a.o -Wl,-headerpad_max_install_names
+otool -l $t/exe
 otool -l $t/exe | grep -A5 'sectname __text' | grep -q 'addr 0x0000000100000978'
 
 echo OK
